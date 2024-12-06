@@ -48,7 +48,7 @@ A user-friendly web app designed to help you manage and keep track of your book 
    ```
 2. Navigate to the project directory:
    ```bash
-   cd book-tracking-app
+   cd EmployeePollsWebApp
    ```
 3. Install all necessary dependencies:
    ```bash
