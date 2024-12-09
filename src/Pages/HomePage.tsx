@@ -7,11 +7,11 @@ import '../Style/auth.css';
 const Background = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   minHeight: '100vh',
-  width: '100%', // Đảm bảo div chiếm toàn bộ chiều rộng
+  width: '100vw', 
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'flex-start', // Để menu bar nằm trên cùng
+  justifyContent: 'flex-start',
   paddingTop: theme.spacing(4),
 }));
 
@@ -22,14 +22,16 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   width: '100%',
+  maxWidth: 'none',
 }));
 
 const StyledCard = styled(Card)(({ theme }) => ({
   boxShadow: theme.shadows[3],
   borderRadius: theme.shape.borderRadius * 2,
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100%',
   maxWidth: 400,
   width: '100%',
 }));
@@ -53,7 +55,7 @@ const HomePage: React.FC = () => {
           gutterBottom
           sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}
         >
-          Chào mừng đến với Trang Chính!
+          Chào mừng đến với trang web Employee-polls!
         </Typography>
 
         <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ maxWidth: '1200px', margin: '0 auto' }}>

@@ -121,13 +121,13 @@ const MenuBar: React.FC = () => {
           onClose={handleClose}
         >
           <MenuItem onClick={handleClose} component={RouterLink} to="/login">
-            Đăng nhập
+            Login
           </MenuItem>
           <MenuItem onClick={handleClose} component={RouterLink} to="/register">
-            Đăng ký
+            Register
           </MenuItem>
           <MenuItem onClick={handleClose} component={RouterLink} to="/register">
-            Đăng xuất
+            Logout
           </MenuItem>
         </Menu>
       </Toolbar>

@@ -44,7 +44,7 @@ A user-friendly web app designed to help you manage and keep track of your book 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/KietVo12/EmployeePollsWebApp.git
+   git clone https://github.com/KietVo12/EMPLOYEE-POLLSWEBAPP.git
    ```
 2. Navigate to the project directory:
    ```bash
