@@ -12,9 +12,8 @@ import {
 	QuestionStatus,
 } from "../config/types";
 import * as udacityApi from "../service/_DATA";
-import { formatQuestion } from "../service/_DATA";
 import { RootState } from "./store";
-
+import { formatQuestion } from "../service/_DATA";
 const name = "questions";
 export const initialState: AsyncState<Question> = {
 	items: [],

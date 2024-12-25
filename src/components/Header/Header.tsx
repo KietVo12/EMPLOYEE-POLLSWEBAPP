@@ -1,16 +1,22 @@
-import { AppBar, Tab, Tabs, Toolbar, Box, Button } from "@mui/material";
+import { AppBar, Tab, Tabs, Toolbar, Box, Button, Typography } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserPanel from "./UserPanel";
 import { HeaderProps } from "./types";
 import { useTheme } from "../../context/ThemeContext";
 import SearchBar from "../Question/SearchBar";
+import PollManagement from "../Question/PollManagement"; // Import PollManagement
+import { _getQuestions } from "../../service/_DATA";
+import { useState, useEffect } from "react";
 
 export const Header = ({ tabs }: HeaderProps) => {
-  const { darkMode, toggleTheme } = useTheme(); // Lấy trạng thái chế độ sáng/tối
+  const { darkMode, toggleTheme } = useTheme();
   const DEFAULT_PATH = "/";
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
+
+  const [polls, setPolls] = useState([]); // State lưu polls từ _getQuestions
+  const [showPollManagement, setShowPollManagement] = useState(false); // Toggle hiển thị PollManagement
 
   const selected = tabs.find((t) => t.path === currentPath)
     ? currentPath
@@ -19,6 +25,25 @@ export const Header = ({ tabs }: HeaderProps) => {
   const handleOnClick = (path: string | undefined) => {
     if (path) navigate(path);
   };
+
+  // Fetch questions for SearchBar
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const data = await _getQuestions(); // Gọi API để lấy câu hỏi
+        // if (data && typeof data === "object") {
+        //   setPolls(Object.values(data)); // Chỉ set polls nếu data là object hợp lệ
+        // } else {
+        //   console.error("Invalid data format:", data);
+        //   setPolls([]); // Nếu không hợp lệ, set polls rỗng
+        // }
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        setPolls([]); // Xử lý lỗi khi không thể lấy dữ liệu
+      }
+    };
+    fetchQuestions();
+  }, []);
 
   return (
     <>
@@ -37,6 +62,7 @@ export const Header = ({ tabs }: HeaderProps) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            gap: 2,
           }}
         >
           {/* Tabs Section */}
@@ -76,22 +102,57 @@ export const Header = ({ tabs }: HeaderProps) => {
             </Tabs>
           </motion.div>
 
-          {/* User Panel and Theme Toggle */}
+          {/* SearchBar Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            style={{ flex: 1, maxWidth: "500px", margin: "0 auto" }}
+          >
+            <SearchBar polls={polls} />
+          </motion.div>
+
+          {/* Dark Mode and User Panel Section */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
           >
             <Box display="flex" alignItems="center" gap={2}>
-              <Button onClick={toggleTheme} variant="outlined">
+              <Button
+                onClick={toggleTheme}
+                variant="outlined"
+                sx={{
+                  textTransform: "none",
+                  fontWeight: "bold",
+                }}
+              >
                 {darkMode ? "Light Mode" : "Dark Mode"}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setShowPollManagement(!showPollManagement)}
+              >
+                {showPollManagement ? "Hide Polls" : "Show Polls"}
               </Button>
               <UserPanel />
             </Box>
           </motion.div>
         </Toolbar>
       </AppBar>
-      <Outlet />
+
+      {/* Hiển thị PollManagement */}
+      {showPollManagement ? (
+        <Box sx={{ padding: 3 }}>
+          <Typography variant="h4" gutterBottom>
+            Poll Management
+          </Typography>
+          <PollManagement />
+        </Box>
+      ) : (
+        <Outlet />
+      )}
     </>
   );
 };

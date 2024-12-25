@@ -1,217 +1,189 @@
 import {
-	Accordion,
-	AccordionActions,
-	AccordionSummary,
-	Alert,
-	Avatar,
-	Button,
-	Snackbar,
-	Stack,
-	TextField,
-	Tooltip,
-	Typography,
-	Box,
+    Box,
+    Stack,
+    TextField,
+    Button,
+    Typography,
+    Avatar,
+    IconButton,
+    InputAdornment,
 } from "@mui/material";
-import { FormEvent, useState } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LoginIcon from "@mui/icons-material/Login";
-import { Navigate } from "react-router-dom";
-import { isSessionActive, sessionActions } from "../../redux/session";
-import { useAppDispatch, useAppSelector as select } from "../../redux/store";
-import { getUsers } from "../../redux/users";
-import { homeProps } from "../../config/sections";
+import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { useAppDispatch, useAppSelector as select } from "../../redux/store";
+import { isSessionActive, sessionActions } from "../../redux/session";
+import { Navigate } from "react-router-dom";
+import { getUsers } from "../../redux/users";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 export const Login: React.FunctionComponent = () => {
-	const [expanded, setExpanded] = useState<string | false>(false);
-	const [submittedBlankPassword, setSubmittedBlankPassword] = useState(false);
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const dispatch = useAppDispatch();
+    const sessionActive = select(isSessionActive());
+    const users = select(getUsers());
+    const queryParams = new URLSearchParams(window.location.search);
+    const redirect = queryParams.get("redirect");
+    const [selectedUser, setSelectedUser] = useState(users[0]?.id || "");
+    const [showPassword, setShowPassword] = useState(false);
 
-	const dispatch = useAppDispatch();
-	const queryParams = new URLSearchParams(window.location.search);
-	const redirect = queryParams.get("redirect");
-	const users = select(getUsers());
-	const sessionActive = select(isSessionActive());
+    const validationSchema = Yup.object({
+        password: Yup.string()
+            .required("Password is required")
+            .min(6, "Password must be at least 6 characters"),
+    });
 
-	const handleAccordionChange =
-		(panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-			setExpanded(isExpanded ? panel : false);
-		};
+    const formik = useFormik({
+        initialValues: { password: "" },
+        validationSchema,
+        onSubmit: (values) => {
+            dispatch(
+                sessionActions.login({
+                    id: selectedUser,
+                    password: values.password,
+                })
+            )
+                .unwrap()
+                .catch((error) => alert(error.message));
+        },
+    });
 
-	const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		if (!event.currentTarget.password.value) setSubmittedBlankPassword(true);
-		const login = dispatch(
-			sessionActions.login({
-				id: event.currentTarget.username.value,
-				password: event.currentTarget.password.value,
-			})
-		);
-		login.unwrap().catch((error) => setErrorMessage(error));
-	};
+    if (sessionActive) {
+        return <Navigate to={redirect || "/"} />;
+    }
 
-	if (sessionActive) {
-		return <Navigate to={redirect || homeProps.path}></Navigate>;
-	}
-
-	return (
-		<Stack
-			direction="column"
-			alignItems="center"
-			spacing={4}
-			sx={{
-				padding: 4,
-				background: "linear-gradient(135deg, #1976d2, #4caf50)",
-				minHeight: "100vh",
-				justifyContent: "center",
-				color: "#fff",
-			}}
+    return (
+        <Box
+        sx={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundImage: "linear-gradient(135deg,rgb(26, 212, 116),rgb(212, 214, 218))",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "100px 20px",
+        }}
+    >
+        <Box sx={{ textAlign: 'center',marginBottom: '50px' }}>
+        <Typography
+            variant="h4"
+            sx={{
+                fontWeight: "bold",
+                color: "#333",
+                textAlign: "center",
+                marginBotton: 0,
+                textShadow: "0px 2px 3px rgba(0, 0, 0, 0.3)",
+                padding: 2,
+            }}
+        >
+            Welcome to the Employee-polls App
+        </Typography>
+        </Box>
+            <Stack
+    			spacing={3}
+    		sx={{
+        		width: "100%",
+        		maxWidth: "400px",
+        		backgroundColor: "rgba(248, 245, 245, 0.80)", 
+        		backdropFilter: "blur(5px)",
+        		padding: 3,
+        		borderRadius: "16px",
+        		boxShadow: "0 8px 15px rgba(0, 0, 0, 0.2)",
+        		textAlign: "center",
+                
+    		}}
 		>
-			<motion.div
-				initial={{ opacity: 0, y: -50 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 1 }}
-			>
-				<Typography
-					variant="h3"
-					sx={{
-						fontWeight: "bold",
-						marginBottom: 4,
-						textTransform: "uppercase",
-					}}
-				>
-					Login with employee-polls app
-				</Typography>
-			</motion.div>
-
-			<Stack
-				direction="column"
-				spacing={2}
-				sx={{
-					width: "100%",
-					maxWidth: "500px",
-					backgroundColor: "#fff",
-					padding: 3,
-					borderRadius: 2,
-					boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
-				}}
-			>
-				{users &&
-					users.map((user) => (
-						<motion.div
-							initial={{ opacity: 0, scale: 0.9 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.5, delay: 0.1 * users.indexOf(user) }}
-							key={user.id}
-						>
-							<Accordion
-								expanded={expanded === user.id}
-								onChange={handleAccordionChange(user.id)}
-								sx={{
-									backgroundColor: "#f9f9f9",
-									border: "1px solid #ddd",
-									borderRadius: 2,
-									overflow: "hidden",
-									marginBottom: 2,
-									"&:hover": {
-										boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-									},
-								}}
-							>
-								<AccordionSummary
-									expandIcon={<ExpandMoreIcon />}
-									sx={{ alignItems: "center" }}
-								>
-									<Stack direction="row" spacing={2} alignItems="center">
-										<Avatar
-											src={user.avatarURL}
-											sx={{
-												width: 48,
-												height: 48,
-												transition: "0.3s",
-												"&:hover": { transform: "scale(1.1)" },
-											}}
-										/>
-										<Typography
-											variant="h6"
-											sx={{
-												fontWeight: "bold",
-												color: "#333",
-												transition: "color 0.3s",
-												"&:hover": { color: "#1976d2" },
-											}}
-										>
-											{user.name}
-										</Typography>
-									</Stack>
-								</AccordionSummary>
-								<form id={user.id} onSubmit={handleOnSubmit}>
-									<AccordionActions
-										sx={{
-											flexDirection: "column",
-											gap: 2,
-											padding: 2,
-										}}
-									>
-										<input
-											readOnly
-											type="text"
-											name="username"
-											autoComplete="username"
-											value={user.id}
-											className="hidden"
-										/>
-										<TextField
-											autoComplete="current-password"
-											label="Password"
-											type="password"
-											name="password"
-											variant="outlined"
-											fullWidth
-										/>
-										<Button
-											type="submit"
-											variant="contained"
-											color="primary"
-											startIcon={<LoginIcon />}
-											fullWidth
-											sx={{
-												textTransform: "none",
-												fontWeight: "bold",
-												background: "linear-gradient(135deg, #1976d2, #4caf50)",
-												boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-												"&:hover": {
-													background: "linear-gradient(135deg, #4caf50, #1976d2)",
-												},
-											}}
-										>
-											Login
-										</Button>
-									</AccordionActions>
-								</form>
-							</Accordion>
-						</motion.div>
-					))}
-			</Stack>
-
-			<Box>
-				<Snackbar
-					open={errorMessage !== null}
-					autoHideDuration={3000}
-					onClose={() => setErrorMessage(null)}
-				>
-					<Alert severity="error">{errorMessage}</Alert>
-				</Snackbar>
-				<Snackbar
-					open={submittedBlankPassword}
-					autoHideDuration={3000}
-					onClose={() => setSubmittedBlankPassword(false)}
-				>
-					<Alert severity="warning">Password cannot be blank</Alert>
-				</Snackbar>
-			</Box>
-		</Stack>
-	);
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Avatar
+                        src={users.find((user) => user.id === selectedUser)?.avatarURL}
+                        alt="User Avatar"
+                        sx={{
+                            width: 60,
+                            height: 60,
+                            margin: "0 auto",
+                            boxShadow: "0 4px 10px hsla(0, 48.30%, 65.90%, 0.20)",
+                        }}
+                    />
+                </motion.div>
+                <Typography
+                    variant="h4"
+                    sx={{ fontWeight: "bold", color: "#333" }}
+                >
+                    Login
+                </Typography>
+                <TextField
+                    label="Username or ID"
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                    select
+                    SelectProps={{ native: true }}
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+                            borderRadius: "5px",
+                            backgroundColor: "rgba(0, 0, 0, 0.2",
+                        },
+                    }}
+                >
+                    {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                            {user.name}
+                        </option>
+                    ))}
+                </TextField>
+                <TextField
+                    label="Password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
+                    fullWidth
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+                            borderRadius: "5px",
+                            backgroundColor: "rgba(0, 0, 0, 0.2",
+                        },
+                    }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <Button
+                    onClick={() => formik.handleSubmit()}
+                    variant="contained"
+                    sx={{
+                        background: "linear-gradient(135deg, #1e88e5, #4caf50)",
+                        borderRadius: "5px",
+                        padding: "15px",
+                        fontWeight: "bold",
+                        "&:hover": {
+                            background: "linear-gradient(135deg,hsl(122, 94.20%, 47.30%),hsl(4, 91.10%, 48.40%))",
+                        },
+                    }}
+                >
+                    Login
+                </Button>
+            </Stack>
+        </Box>
+    );
 };
 
 export default Login;

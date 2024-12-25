@@ -24,7 +24,7 @@ Upon voting in a poll, all of the information of an answered poll is displayed. 
 - create Tailwind CSS file with `npm run tailwind`
 - start the app with with `npm start`
   ( Runs the app in the development mode.)<br>
-- Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Open [http://localhost:5153](http://localhost:5153) to view it in the browser.
 
 ## Create React App
 

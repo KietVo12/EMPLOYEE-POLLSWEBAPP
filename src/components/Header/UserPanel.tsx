@@ -29,17 +29,17 @@ export const UserPanel = () => {
 			direction="row"
 			justifyContent="flex-end"
 			alignItems="center"
-			sx={{ paddingX: 3, gap: 3 }} // Thêm khoảng cách giữa các phần tử
+			sx={{ paddingX: 3, gap: 3 }} 
 		>
 			{session.status === "ACTIVE" && (
 				<Stack
 					direction="row"
 					alignItems="center"
-					sx={{ gap: 1 }} // Điều chỉnh khoảng cách giữa Avatar và tên
+					sx={{ gap: 1 }}
 				>
 					<Avatar
 						src={session.userDetails?.avatarURL}
-						sx={{ width: 50, height: 50 }} // Kích thước avatar
+						sx={{ width: 50, height: 50 }} 
 					/>
 					<Typography variant="body1" sx={{ fontWeight: "bold" }}>
 						{session.userDetails?.name}
