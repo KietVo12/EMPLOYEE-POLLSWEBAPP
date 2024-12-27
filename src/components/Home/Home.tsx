@@ -13,7 +13,6 @@ const HomePage: React.FC = () => {
   const questions = useSelector((state: any) => state.question.questions);
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (questions) {
       const newQuestion: Question[] = [];
