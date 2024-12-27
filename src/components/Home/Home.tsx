@@ -1,110 +1,83 @@
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-  Box,
-} from "@mui/material";
-import { useState } from "react";
-import { getQuestionsByStatus } from "../../redux/questions";
-import { useAppSelector as select } from "../../redux/store";
-import QuestionCard from "../Question/QuestionCard";
-import { HomeProps } from "./types";
-const Home: React.FC<HomeProps> = () => {
-  const [isToggle, setIsToggle] = useState(true);
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import QuestionCategory from "../Question/QuestionCategory";
+import { Question, User } from "../../config/types";
 
-  const newQuestions = select(getQuestionsByStatus("NEW"));
-  const doneQuestions = select(getQuestionsByStatus("DONE"));
+const HomePage: React.FC = () => {
+  const [newQuestions, setNewQuestions] = useState<Question[]>([]);
+  const [doneQuestions, setDoneQuestions] = useState<Question[]>([]);
+  const [isDefaultView, setIsDefaultView] = useState<boolean>(true);
 
-  const toggleChange = () => {
-    setIsToggle(!isToggle);
-  };
+  const authedId = useSelector((state: any) => state.auth.authedId);
+  const users = useSelector((state: any) => state.user.users);
+  const questions = useSelector((state: any) => state.question.questions);
 
-  const newQuestionsBlock = () => (
-    <Stack id="new-questions" className="flex-1 my-5">
-      <Typography textAlign="center" variant="h3">
-        New Questions
-      </Typography>
-      <Grid
-        container
-        direction="row"
-        gap={5}
-        justifyContent="center"
-        alignItems="center"
-        className="mt-5"
-      >
-        {newQuestions.map((q) => (
-          <Grid key={q.id} item xs={12} md={5} lg={3}>
-            <QuestionCard question={q} />
-          </Grid>
-        ))}
-      </Grid>
-    </Stack>
-  );
+  const dispatch = useDispatch();
 
-  const doneQuestionsBlock = () => (
-    <Stack id="done-questions" className="flex-1 my-5">
-      <Typography textAlign="center" variant="h3">
-        Done
-      </Typography>
-      <Grid
-        container
-        direction="row"
-        gap={5}
-        justifyContent="center"
-        alignItems="center"
-        className="mt-5"
-      >
-        {doneQuestions.map((q) => (
-          <Grid key={q.id} item xs={12} md={5} lg={3}>
-            <QuestionCard question={q} />
-          </Grid>
-        ))}
-      </Grid>
-    </Stack>
-  );
+  useEffect(() => {
+    if (questions) {
+      const newQuestion: Question[] = [];
+      const doneQuestion: Question[] = [];
+      Object.keys(questions).forEach((key) => {
+        const q = { ...questions[key] } as Question;
+        q.user = users[q.author];
+        if (
+          q.optionOne.votes.indexOf(authedId) < 0 &&
+          q.optionTwo.votes.indexOf(authedId) < 0
+        ) {
+          newQuestion.push(q);
+        } else {
+          doneQuestion.push(q);
+        }
+      });
+      setNewQuestions(
+        newQuestion.sort((a, b) => b.timestamp - a.timestamp)
+      );
+      setDoneQuestions(
+        doneQuestion.sort((a, b) => b.timestamp - a.timestamp)
+      );
+    }
+  }, [dispatch, authedId, users, questions]);
 
   return (
-    <Stack
-      direction="row"
-      sx={{
-        width: "100%",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-      }}
-    >
-      {/* Khối chứa câu hỏi */}
-      <Box sx={{ flexGrow: 1 }}>{isToggle ? newQuestionsBlock() : doneQuestionsBlock()}</Box>
-
-      {/* Panel điều khiển nằm ở bên phải */}
-      <FormControl
-        sx={{
-          minWidth: "150px",
-          marginLeft: "auto",
-          textAlign: "left",
-        }}
+    <div className="home">
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
       >
-        <FormLabel
-          sx={{
-            fontWeight: "bold",
-            color: "purple",
-            fontSize: 17,
-            marginTop: 3,
-          }}
-        >
+        <input
+          type="radio"
+          className="btn-check"
+          name="btnradio"
+          id="btnradio1"
+          autoComplete="off"
+          checked={isDefaultView}
+          onChange={() => setIsDefaultView(true)}
+        />
+        <label className="btn btn-outline-primary" htmlFor="btnradio1">
           Questions
-        </FormLabel>
-        <RadioGroup name="questions" value={isToggle} onChange={toggleChange}>
-          <FormControlLabel value={true} control={<Radio />} label="New" />
-          <FormControlLabel value={false} control={<Radio />} label="Done" />
-        </RadioGroup>
-      </FormControl>
-    </Stack>
+        </label>
+        <input
+          type="radio"
+          className="btn-check"
+          name="btnradio"
+          id="btnradio2"
+          autoComplete="off"
+          checked={!isDefaultView}
+          onChange={() => setIsDefaultView(false)}
+        />
+        <label className="btn btn-outline-primary" htmlFor="btnradio2">
+          Questions Completed
+        </label>
+      </div>
+      {isDefaultView ? (
+        <QuestionCategory title="New Questions" questions={newQuestions} />
+      ) : (
+        <QuestionCategory title="Questions Completed" questions={doneQuestions} />
+      )}
+    </div>
   );
 };
 
-export default Home;
+export default HomePage;

@@ -36,12 +36,12 @@ const saveQuestion = createAsyncThunk(
 );
 
 // Save an answer for a question
-const saveQuestionAnswer = createAsyncThunk(
-	`${name}/saveQuestionAnswer`,
+ const saveQuestionAnswer = createAsyncThunk(
+ 	`${name}/saveQuestionAnswer`,
 	async (arg: Answer) => {
 		await udacityApi._saveQuestionAnswer(arg);
-		return arg; // Return the answer for further processing
-	}
+		return arg; 
+ 	}
 );
 
 export const questionsSlice = createSlice({
@@ -53,38 +53,28 @@ export const questionsSlice = createSlice({
 				state.items = payload;
 				state.status = "loaded";
 			})
-			.addCase(saveQuestion.fulfilled, (state, { payload }) => {
-				// Add or update the saved question
-				const questionExists = state.items.some((q) => q.id === payload.id);
-				if (!questionExists) {
-					state.items.unshift(payload);
-				}
-			})
+
 			.addCase(saveQuestion.pending, (state, { meta }) => {
-				// Add a temporary draft question while it's being saved
 				const draftQuestion = formatQuestion(meta.arg);
 				state.items.unshift(draftQuestion);
 			})
-			.addCase(saveQuestionAnswer.fulfilled, (state, { meta }) => {
-				// Update the question's votes based on the saved answer
-				const question = state.items.find((q) => q.id === meta.arg.qid);
-				if (question) {
-					const answerKey = meta.arg.answer as "optionOne" | "optionTwo";
-					question[answerKey].votes.push(meta.arg.authedUser);
-				}
-			});
+			 .addCase(saveQuestionAnswer.fulfilled, (state, { meta }) => {
+			 	const question = state.items.find((q) => q.id === meta.arg.qid);
+			 	if (question) {
+			 		const answerKey = meta.arg.answer as "optionOne" | "optionTwo";
+			 		question[answerKey].votes.push(meta.arg.authedUser);
+			 	}
+		 });
 	},
 	reducers: {},
 });
-
-// Utility functions
-const areQuestionsEquivalent = (q1: Question, q2: Question): boolean => {
-	return (
-		q1.author === q2.author &&
-		q1.optionOne.text === q2.optionOne.text &&
-		q1.optionTwo.text === q2.optionTwo.text
-	);
-};
+// const areQuestionsEquivalent = (q1: Question, q2: Question): boolean => {
+// 	return (
+// 		q1.author === q2.author &&
+// 		q1.optionOne.text === q2.optionOne.text &&
+// 		q1.optionTwo.text === q2.optionTwo.text
+// 	);
+// };
 
 const getQuestionParticipants = (question: Question): string[] => {
 	return Array.from(
@@ -96,7 +86,6 @@ const isParticipantInQuestion = (question: Question, participant: string): boole
 	return getQuestionParticipants(question).includes(participant);
 };
 
-// Selectors
 export const getQuestions = () =>
 	createSelector(
 		(state: RootState) => state[name],
@@ -143,8 +132,6 @@ export const getQuestionsByStatus = (status: QuestionStatus) =>
 			return [];
 		}
 	);
-
-// Actions and exports
 export const questionsActions = {
 	loadQuestions,
 	saveQuestion,

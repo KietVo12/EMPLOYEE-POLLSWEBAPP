@@ -12,9 +12,9 @@ import {
 import { getSession } from "../../redux/session";
 import { useAppDispatch, useAppSelector as select } from "../../redux/store";
 import { getUserDetails, getUsers } from "../../redux/users";
-import { NotFound } from "../NotFound";
 import QuestionFrame from "./QuestionFrame";
 import QuestionResult from "./QuestionResult";
+import NotFound from "./NotFound";
 
 export const QuestionManage: React.FC = () => {
   const navigate = useNavigate();

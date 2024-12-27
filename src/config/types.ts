@@ -50,6 +50,7 @@ export type QuestionData = {
 
 // Định nghĩa kiểu dữ liệu câu hỏi
 export type Question = {
+    user: any;
 	id: string; // ID câu hỏi
 	timestamp: number; // Thời gian tạo câu hỏi (dạng timestamp)
 	author: string; // Tác giả câu hỏi
@@ -80,3 +81,8 @@ export type AsyncState<T> = {
 
 // Định nghĩa trạng thái của câu hỏi (lọc)
 export type QuestionStatus = "ALL" | "NEW" | "DONE"; // Tất cả, mới, hoặc đã hoàn thành
+// Định nghĩa thông tin danh mục 
+export interface QuestionCategoryProps {
+  title: string;
+    questions: Question[];
+}

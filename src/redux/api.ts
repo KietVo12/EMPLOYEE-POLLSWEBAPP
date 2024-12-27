@@ -2,6 +2,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Answer, Question, QuestionData, User } from "../config/types";
 import * as udacityApi from "../service/_DATA";
 
+export const fetchQuestionById = async (id: string): Promise<Question> => {
+    const response = await fetch(`/api/questions/${id}`);
+    if (!response.ok) {
+        throw new Error("Failed to fetch question");
+    }
+    return response.json(); // Trả về dữ liệu đúng kiểu
+};
 //Initial Udacity API integration with redux using RTK
 export const api = createApi({
 	reducerPath: "api",
@@ -45,7 +52,7 @@ export const api = createApi({
 		}),
 		saveQuestion: builder.mutation<Question, QuestionData>({
 			queryFn: async (arg) => {
-				const response = await udacityApi._saveQuestion(arg);
+				const response = await udacityApi._saveQuestion(arg) as Question;
 				return { data: response };
 			},
 			invalidatesTags: (results) => [{ type: "Question", id: results?.id }],
@@ -53,7 +60,7 @@ export const api = createApi({
 		saveQuestionAnswer: builder.mutation<boolean, Answer>({
 			queryFn: async (arg) => {
 				const response = await udacityApi._saveQuestionAnswer(arg);
-				return { data: response };
+				return { data: response as boolean };
 			},
 			invalidatesTags: (results, error, arg) => [
 				{ type: "Question", id: arg.qid },

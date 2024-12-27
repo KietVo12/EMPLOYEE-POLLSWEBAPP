@@ -1,4 +1,5 @@
 import { Answer, Question, QuestionData, User } from "../config/types";
+
 // Khởi tạo dữ liệu người dùng
 export let users: { [key: string]: User } = {
   Kiet: {
@@ -10,6 +11,8 @@ export let users: { [key: string]: User } = {
     answers: {
       "8xf0y6ziyjabvozdd253nd": "optionOne",
       "6ni6ok3ym7mf1p33lnez": "optionTwo",
+      xj352vofupe1dqz9emx13r: "optionOne",
+      vthrdm985a262al8qx3do: "optionTwo",
     },
     questions: ["8xf0y6ziyjabvozdd253nd", "am8ehyc8byjqgar0jgpub9"],
   },
@@ -22,6 +25,8 @@ export let users: { [key: string]: User } = {
     answers: {
       am8ehyc8byjqgar0jgpub9: "optionTwo",
       loxhs1bqm25b708cmbf3g: "optionOne",
+      xj352vofupe1dqz9emx13r: "optionOne",
+      vthrdm985a262al8qx3do: "optionTwo",
     },
     questions: ["vthrdm985a262al8qx3do"],
   },
@@ -33,6 +38,8 @@ export let users: { [key: string]: User } = {
       "https://gravatar.com/avatar/ab47a2b1c4774f4e9f835173243ef62c?s=400&d=robohash&r=x",
     answers: {
       xj352vofupe1dqz9emx13r: "optionOne",
+      vthrdm985a262al8qx3do: "optionTwo",
+      "6ni6ok3ym7mf1p33lnez": "optionOne",
     },
     questions: ["loxhs1bqm25b708cmbf3g"],
   },
@@ -44,6 +51,8 @@ export let users: { [key: string]: User } = {
       "https://gravatar.com/avatar/eff8c72f5c48f9d4f4edee519b1df2dc?s=400&d=robohash&r=x",
     answers: {
       "6ni6ok3ym7mf1p33lnez": "optionOne",
+      xj352vofupe1dqz9emx13r: "optionOne",
+      vthrdm985a262al8qx3do: "optionTwo",
     },
     questions: [],
   },
@@ -51,86 +60,91 @@ export let users: { [key: string]: User } = {
 
 // Khởi tạo dữ liệu câu hỏi
 export let questions: { [key: string]: Question } = {
-    "8xf0y6ziyjabvozdd253nd": {
-        id: "8xf0y6ziyjabvozdd253nd",
-        author: "Kiet",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: ["Kiet"],
-            text: "Build our new application with JavaScript",
-        },
-        optionTwo: {
-            votes: [],
-            text: "Build our new application with TypeScript",
-        },
+  "8xf0y6ziyjabvozdd253nd": {
+    id: "8xf0y6ziyjabvozdd253nd",
+    author: "Kiet",
+    user: "Kiet",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: ["Kiet"],
+      text: "Build our new application with JavaScript",
     },
-    "6ni6ok3ym7mf1p33lnez": {
-        id: "6ni6ok3ym7mf1p33lnez",
-        author: "Thao",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: ["Thao"],
-            text: "Hire more frontend developers",
-        },
-        optionTwo: {
-            votes: ["Kiet"],
-            text: "Hire more backend developers",
-        },
+    optionTwo: {
+      votes: [],
+      text: "Build our new application with TypeScript",
     },
-    am8ehyc8byjqgar0jgpub9: {
-        id: "am8ehyc8byjqgar0jgpub9",
-        author: "Kiet",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: [],
-            text: "Conduct a release retrospective 1 week after a release",
-        },
-        optionTwo: {
-            votes: ["Thanh"],
-            text: "Conduct release retrospectives quarterly",
-        },
+  },
+  "6ni6ok3ym7mf1p33lnez": {
+    id: "6ni6ok3ym7mf1p33lnez",
+    author: "Thao",
+    user: "Thao",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: ["Thao", "Ngan"],
+      text: "Hire more frontend developers",
     },
-    loxhs1bqm25b708cmbf3g: {
-        id: "loxhs1bqm25b708cmbf3g",
-        author: "Ngan",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: ["Thanh"],
-            text: "Have code reviews conducted by peers",
-        },
-        optionTwo: {
-            votes: [],
-            text: "Have code reviews conducted by managers",
-        },
+    optionTwo: {
+      votes: ["Kiet"],
+      text: "Hire more backend developers",
     },
-    vthrdm985a262al8qx3do: {
-        id: "vthrdm985a262al8qx3do",
-        author: "Thanh",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: ["Thanh"],
-            text: "Take a course on ReactJS",
-        },
-        optionTwo: {
-            votes: [],
-            text: "Take a course on unit testing with Jest",
-        },
+  },
+  am8ehyc8byjqgar0jgpub9: {
+    id: "am8ehyc8byjqgar0jgpub9",
+    author: "Kiet",
+    user: "Kiet",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: [],
+      text: "Conduct a release retrospective 1 week after a release",
     },
-    xj352vofupe1dqz9emx13r: {
-        id: "xj352vofupe1dqz9emx13r",
-        author: "Ngan",
-        timestamp: Date.now(),
-        optionOne: {
-            votes: ["Ngan"],
-            text: "Deploy to production once every two weeks",
-        },
-        optionTwo: {
-            votes: [],
-            text: "Deploy to production once every month",
-        },
+    optionTwo: {
+      votes: ["Thanh"],
+      text: "Conduct release retrospectives quarterly",
     },
+  },
+  loxhs1bqm25b708cmbf3g: {
+    id: "loxhs1bqm25b708cmbf3g",
+    author: "Ngan",
+    user: "Ngan",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: ["Thanh"],
+      text: "Have code reviews conducted by peers",
+    },
+    optionTwo: {
+      votes: [],
+      text: "Have code reviews conducted by managers",
+    },
+  },
+  vthrdm985a262al8qx3do: {
+    id: "vthrdm985a262al8qx3do",
+    author: "Thanh",
+    user: "Thanh",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: ["Thanh"],
+      text: "Take a course on ReactJS",
+    },
+    optionTwo: {
+      votes: ["Kiet", "Ngan"],
+      text: "Take a course on unit testing with Jest",
+    },
+  },
+  xj352vofupe1dqz9emx13r: {
+    id: "xj352vofupe1dqz9emx13r",
+    author: "Ngan",
+    user: "Ngan",
+    timestamp: Date.now(),
+    optionOne: {
+      votes: ["Ngan", "Thao", "Kiet"],
+      text: "Deploy to production once every two weeks",
+    },
+    optionTwo: {
+      votes: ["Thanh"],
+      text: "Deploy to production once every month",
+    },
+  },
 };
-
 
 // Hàm tạo ID ngẫu nhiên
 function generateUID(): string {
@@ -150,116 +164,183 @@ export function _getQuestions(): Promise<{ [key: string]: Question }> {
 // Lấy tất cả người dùng
 export function _getUsers(): Promise<{ [key: string]: User }> {
   return new Promise((resolve) => {
-    setTimeout(() => resolve({ ...users }), 500);
+    setTimeout(() => resolve({ ...users }), 1000);
   });
 }
+
+// Format câu hỏi
 export function formatQuestion({
-	optionOneText,
-	optionTwoText,
-	author,
-  }: QuestionData): Question {
-	return {
-	  id: generateUID(),
-	  timestamp: Date.now(),
-	  author,
-	  optionOne: {
-		votes: [],
-		text: optionOneText,
-	  },
-	  optionTwo: {
-		votes: [],
-		text: optionTwoText,
-	  },
-	};
-  }
-// Thêm câu hỏi mới
-export function _saveQuestion(questionData: QuestionData): Promise<Question> {
+  optionOneText,
+  optionTwoText,
+  author,
+}: QuestionData): Question {
+  return {
+    id: generateUID(),
+    timestamp: Date.now(),
+    author,
+    user: author,
+    optionOne: {
+      votes: [],
+      text: optionOneText,
+    },
+    optionTwo: {
+      votes: [],
+      text: optionTwoText,
+    },
+  };
+}
+export function _saveQuestion(question: {
+  optionOneText: string;
+  optionTwoText: string;
+  author: string;
+}) {
   return new Promise((resolve, reject) => {
     if (
-      !questionData.optionOneText ||
-      !questionData.optionTwoText ||
-      !questionData.author
+      !question.optionOneText ||
+      !question.optionTwoText ||
+      !question.author
     ) {
       reject("Please provide optionOneText, optionTwoText, and author");
     }
-
-    const formattedQuestion = {
-      id: generateUID(),
-      timestamp: Date.now(),
-      author: questionData.author,
-      optionOne: {
-        votes: [],
-        text: questionData.optionOneText,
-      },
-      optionTwo: {
-        votes: [],
-        text: questionData.optionTwoText,
-      },
-    };
-
+ 
+    const formattedQuestion = formatQuestion(question);
     setTimeout(() => {
       questions = {
         ...questions,
         [formattedQuestion.id]: formattedQuestion,
       };
-
-      if (users[questionData.author].questions) {
-        users[questionData.author].questions?.push(formattedQuestion.id);
-      } else {
-        users[questionData.author].questions = [formattedQuestion.id];
-      }
-
+ 
+      users = {
+        ...users,
+        [question.author]: {
+          ...users[question.author],
+          questions: [
+            ...(users[question.author].questions || []),
+            formattedQuestion.id,
+          ],
+        },
+      };
+ 
       resolve(formattedQuestion);
-    }, 500);
+    }, 1000);
   });
 }
-
-// Sửa câu hỏi
-export function _editQuestion(
-  qid: string,
-  updatedData: Partial<Question>
-): Promise<Question> {
+ 
+export function _saveQuestionAnswer({
+  authedUser,
+  qid,
+  answer,
+}: {
+  authedUser: string;
+  qid: string;
+  answer: string;
+}) {
   return new Promise((resolve, reject) => {
-    if (!questions[qid]) {
-      reject("Question not found");
+    if (!authedUser || !qid || !answer) {
+      reject("Please provide authedUser, qid, and answer");
     }
-
-    const updatedQuestion = {
-      ...questions[qid],
-      ...updatedData,
-    };
-
+  
     setTimeout(() => {
-      questions[qid] = updatedQuestion;
-      resolve(updatedQuestion);
-    }, 500);
-  });
-}
-
-// Xóa câu hỏi
-export function _deleteQuestion(qid: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    if (!questions[qid]) {
-      reject("Question not found");
-    }
-
-    const author = questions[qid].author;
-
-    setTimeout(() => {
-      const { [qid]: _, ...remainingQuestions } = questions;
-      questions = remainingQuestions;
-
-      if (users[author].questions) {
-        users[author].questions = users[author].questions?.filter(
-          (questionId) => questionId !== qid
-        );
-      }
-
+      users = {
+        ...users,
+        [authedUser]: {
+          ...users[authedUser],
+          answers: {
+            ...users[authedUser]?.answers,
+            [qid]: answer,
+          },
+        },
+      };
+    
+      questions = {
+        ...questions,
+        [qid]: {
+          ...questions[qid],
+          [answer]: {
+            ...(questions[qid][answer as 'optionOne' | 'optionTwo']),
+            votes: questions[qid][answer as 'optionOne' | 'optionTwo'].votes.concat([authedUser]),
+          },
+        },
+      };
+ 
       resolve(true);
     }, 500);
   });
 }
-export function _saveQuestionAnswer(arg: Answer) {
-	throw new Error("Function not implemented.");
-}
+// //Thêm câu hỏi 
+// export function _saveQuestion(questionData: QuestionData): Promise<Question> {
+//   return new Promise((resolve, reject) => {
+//     if (!questionData.optionOneText || !questionData.optionTwoText || !questionData.author) {
+//       reject("Please provide optionOneText, optionTwoText, and author");
+//     }
+
+//     const formattedQuestion = formatQuestion(questionData);
+
+//     setTimeout(() => {
+//       questions = {
+//         ...questions,
+//         [formattedQuestion.id]: formattedQuestion,
+//       };
+
+//       if (users[questionData.author]) {
+//         users[questionData.author].questions?.push(formattedQuestion.id);
+//       }
+
+//       resolve(formattedQuestion);
+//     }, 1000);
+//   });
+// }
+
+// // Lưu câu trả lời cho câu hỏi
+// export function _saveQuestionAnswer({ authedUser, qid, answer }: Answer): Promise<boolean> {
+//   return new Promise((resolve, reject) => {
+//     if (!authedUser || !qid || !answer) {
+//       reject("Please provide authedUser, qid, and answer");
+//     }
+
+//     if (!questions[qid]) {
+//       reject("Question not found");
+//     }
+
+//     setTimeout(() => {
+//       const question = questions[qid];
+//       const option = answer === "optionOne" ? question.optionOne : question.optionTwo;
+
+//       if (!option.votes.includes(authedUser)) {
+//         option.votes.push(authedUser);
+
+//         users[authedUser].answers = {
+//           ...users[authedUser].answers,
+//           [qid]: answer,
+//         };
+
+//         resolve(true);
+//       } else {
+//         reject("User has already voted");
+//       }
+//     }, 500);
+//   });
+// }
+
+// // Xóa câu hỏi
+// export function _deleteQuestion(qid: string): Promise<boolean> {
+//   return new Promise((resolve, reject) => {
+//     if (!questions[qid]) {
+//       reject("Question not found");
+//     }
+
+//     const author = questions[qid].author;
+
+//     setTimeout(() => {
+//       const { [qid]: _, ...remainingQuestions } = questions;
+//       questions = remainingQuestions;
+
+//       if (users[author]) {
+//         users[author].questions = users[author].questions?.filter((id) => id !== qid);
+//       }
+
+//       resolve(true);
+//     }, 500);
+//   });
+
 

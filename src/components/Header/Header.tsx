@@ -5,10 +5,8 @@ import UserPanel from "./UserPanel";
 import { HeaderProps } from "./types";
 import { useTheme } from "../../context/ThemeContext";
 import SearchBar from "../Question/SearchBar";
-import PollManagement from "../Question/PollManagement"; // Import PollManagement
 import { _getQuestions } from "../../service/_DATA";
 import { useState, useEffect } from "react";
-
 export const Header = ({ tabs }: HeaderProps) => {
   const { darkMode, toggleTheme } = useTheme();
   const DEFAULT_PATH = "/";
@@ -16,7 +14,6 @@ export const Header = ({ tabs }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [polls, setPolls] = useState([]); // State lưu polls từ _getQuestions
-  const [showPollManagement, setShowPollManagement] = useState(false); // Toggle hiển thị PollManagement
 
   const selected = tabs.find((t) => t.path === currentPath)
     ? currentPath
@@ -129,30 +126,13 @@ export const Header = ({ tabs }: HeaderProps) => {
               >
                 {darkMode ? "Light Mode" : "Dark Mode"}
               </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => setShowPollManagement(!showPollManagement)}
-              >
-                {showPollManagement ? "Hide Polls" : "Show Polls"}
-              </Button>
+             
               <UserPanel />
             </Box>
           </motion.div>
         </Toolbar>
       </AppBar>
-
-      {/* Hiển thị PollManagement */}
-      {showPollManagement ? (
-        <Box sx={{ padding: 3 }}>
-          <Typography variant="h4" gutterBottom>
-            Poll Management
-          </Typography>
-          <PollManagement />
-        </Box>
-      ) : (
-        <Outlet />
-      )}
+      <Outlet/>
     </>
   );
 };

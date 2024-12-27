@@ -12,8 +12,6 @@ import { usersActions } from "./redux/users";
 import { questionsActions } from "./redux/questions";
 import { homeProps, leaderboardProps, CreatenewquestionProps, loginProps } from "./config/sections";
 import { ThemeContextProvider } from "./context/ThemeContext";
-import PollManagement from "./components/Question/PollManagement";
-
 const App = () => {
   const dispatch = useAppDispatch();
 
@@ -42,7 +40,6 @@ const App = () => {
             />
             <Route path={CreatenewquestionProps.path} element={<QuestionNew />} />
             <Route path="/questions/:id" element={<QuestionManage />} />
-            <Route path="/polls/manage" element={<PollManagement />} />
           </Route>
 
           <Route path={loginProps.path} element={<Login {...loginProps} />} />
