@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PollPage should render the component 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-8atqhb"
+  >
+    <span
+      class="MuiLinearProgress-root MuiLinearProgress-colorSecondary MuiLinearProgress-indeterminate css-10jyip1-MuiLinearProgress-root"
+      role="progressbar"
+    >
+      <span
+        class="MuiLinearProgress-bar MuiLinearProgress-barColorSecondary MuiLinearProgress-bar1Indeterminate css-p53mz9-MuiLinearProgress-bar1"
+      />
+      <span
+        class="MuiLinearProgress-bar MuiLinearProgress-barColorSecondary MuiLinearProgress-bar2Indeterminate css-xybj4j-MuiLinearProgress-bar2"
+      />
+    </span>
+  </div>
+</div>
+`;
