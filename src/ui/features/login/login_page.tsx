@@ -22,7 +22,7 @@ interface LocationState {
 export default function Login() {
   const [user, setUser] = useState<string | null>(null);
   const [password, setPassword] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const { entities: users, loading } = useAppSelector((state) => state.users);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,32 +36,32 @@ export default function Login() {
   const isLoading = loading === LoadingStatus.idle;
   const handleUserChange = (event: SelectChangeEvent) => {
     setUser(event.target.value as string);
-    setErrorMessage(null);
+    setErrorMessage(undefined);
   };
 
 
   const handlePasswordChange = (pw: string) => {
     setPassword(pw);
-    setErrorMessage(null); 
+    setErrorMessage(undefined); 
   };
 
   const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!user) {
-      setErrorMessage("Vui lòng chọn user.");
+      setErrorMessage("Please select user.");
       return;
     }
     const userObj = users[user];
     if (!userObj) {
-      setErrorMessage("User không tồn tại.");
+      setErrorMessage("User does not exist.");
       return;
     }
     if (password !== userObj.password) {
-      setErrorMessage("Mật khẩu sai, vui lòng nhập lại.");
+      setErrorMessage("Incorrect password, please re-enter.");
       return;
     }
-    setErrorMessage(null);
+    setErrorMessage(undefined);
     dispatch(setAuthedUser(user));
     navigate(route, { replace: true });
   };
@@ -71,12 +71,12 @@ export default function Login() {
       sx={{
         minHeight: "100vh",
         width: "100%",
-        background: "linear-gradient(135deg, #48c774, #2ecc71)",
+        background: "linear-gradient(135deg,rgb(22, 234, 96),rgb(114, 198, 149))",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         pt: { xs: 5, md: 8 },
-        pb: 5,
+        pb: 6,
       }}
     >
       <Typography
@@ -111,13 +111,8 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar
-          src="/user.png"
-          alt="User Avatar"
-          sx={{ width: 60, height: 60, mb: 2 }}
-        />
-
-        <Typography variant="h4" sx={{ mb: 3 }}>
+        <img src="/user.png" alt="user" width="50px" />
+        <Typography variant="h4" mt="10px" sx={{ mb: 3 }}>
           Login
         </Typography>
         <LoginForm
@@ -125,7 +120,7 @@ export default function Login() {
           users={users}
           password={password}
           isLoading={isLoading}
-          // errorMessage={errorMessage}
+          errorMessage={errorMessage}
           onUserChange={handleUserChange}
           onPasswordChange={handlePasswordChange}
           onSubmit={handleOnSubmit}

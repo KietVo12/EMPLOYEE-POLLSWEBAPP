@@ -12,6 +12,8 @@ import {
   Typography,
   Avatar,
   IconButton,
+  InputAdornment,
+  Input,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { User } from "../../../../state/modules/users";
@@ -21,8 +23,8 @@ export interface ILoginFormProps {
   users: Record<string, User>;
   password: string;
   isLoading: boolean;
-  errorMessage?: string; 
-  
+  errorMessage?: string;
+
 
   onUserChange: (event: SelectChangeEvent) => void;
   onPasswordChange: (pw: string) => void;
@@ -35,7 +37,7 @@ export default function LoginForm(props: ILoginFormProps) {
     users,
     password,
     isLoading,
-    errorMessage,  
+    errorMessage,
     onUserChange,
     onPasswordChange,
     onSubmit,
@@ -88,19 +90,18 @@ export default function LoginForm(props: ILoginFormProps) {
           onChange={(e) => onPasswordChange(e.target.value)}
           disabled={isLoading}
           required
-        />
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: "50%",
-            transform: "translateY(-50%)",
+          InputProps={{
+            endAdornment: <InputAdornment position="end"
+              aria-label="toggle password visibility"
+              onClick={()=>setShowPassword(val => !val)}
+            >
+              <IconButton>
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>,
           }}
-          onClick={() => setShowPassword(!showPassword)}
-          edge="end"
-        >
-          {showPassword ? <VisibilityOff /> : <Visibility />}
-        </IconButton>
+        />
+
       </Box>
 
       {/* Hiển thị lỗi nếu có */}
