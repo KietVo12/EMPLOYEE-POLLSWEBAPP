@@ -65,6 +65,7 @@ export default function LoginForm(props: ILoginFormProps) {
           label="Username or ID"
           name="username"
           value={user ?? ""}
+          error={Boolean(errorMessage)}
           required
           disabled={isLoading}
           onChange={onUserChange}
@@ -90,6 +91,7 @@ export default function LoginForm(props: ILoginFormProps) {
           onChange={(e) => onPasswordChange(e.target.value)}
           disabled={isLoading}
           required
+          error={Boolean(errorMessage)}
           InputProps={{
             endAdornment: <InputAdornment position="end"
               aria-label="toggle password visibility"

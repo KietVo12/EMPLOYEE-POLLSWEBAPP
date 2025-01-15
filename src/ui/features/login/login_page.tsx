@@ -12,7 +12,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import LoginForm from "./components/login_form";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { setAuthedUser } from "../../../state/modules/authedUser";
-// import { User } from "../../../state/modules/users";
+import { User } from "../../../state/modules/users";
 import PageRoutes from "../../../state/types/page_routes";
 import LoadingStatus from "../../../state/types/loading_status";
 
